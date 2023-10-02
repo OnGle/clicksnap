@@ -72,7 +72,7 @@ async fn main() -> color_eyre::Result<()> {
         pse: preseeds,
     };
     match RUNNERS.get(app.as_str()) {
-        Some(t) => t.run(&st).await.map_err(color_eyre::Report::new),
+        Some(t) => t.run(&st).await,
         None => Err(color_eyre::Report::msg(format!("Unknown app: {:?}!", app))),
     }
 }

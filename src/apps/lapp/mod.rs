@@ -8,7 +8,7 @@ pub struct T();
 
 #[async_trait]
 impl Runner for T {
-    async fn exec(&self, st: &State) -> WebDriverResult<()> {
+    async fn exec(&self, st: &State) -> color_eyre::Result<()> {
         match &st.act {
             Action::Test => {
                 // if there is a tkl-webcp page we're good

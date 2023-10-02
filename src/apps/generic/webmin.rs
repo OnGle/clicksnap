@@ -7,7 +7,7 @@ pub struct T();
 
 #[async_trait]
 impl Runner for T {
-    async fn exec(&self, st: &State) -> WebDriverResult<()> {
+    async fn exec(&self, st: &State) -> color_eyre::Result<()> {
         let mut u = st.url.clone();
         // webmin login
         u.set_port(Some(12321))
