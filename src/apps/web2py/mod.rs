@@ -11,6 +11,7 @@ pub const APP: App = App {
                     st.goto("/admin").await?;
                     let f = st.wait(By::Id("password")).await?;
                     f.send_keys(&st.pse.app_pass).await?;
+                    st.sleep(500).await;
                     Ok(())
                 }
                 .boxed()
