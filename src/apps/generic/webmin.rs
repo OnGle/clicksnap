@@ -42,7 +42,8 @@ pub const STEPS: Steps = &[
                     .await?
                     .click()
                     .await?;
-                st.wait(By::Css("g[class='ct-labels']")).await?;
+                st.wait(By::Css("span[class='piechart'] canvas")).await?;
+                st.sleep(1_000).await;
                 Ok(())
             }
             .boxed()
