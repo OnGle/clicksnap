@@ -15,47 +15,16 @@ pub const APP: App = App {
                         form.set_by_name("password", &st.pse.app_pass).await?;
                         form.submit_direct().await?;
 
-                        if let Ok(_) = st.wait(By::Css("div.nyroModalCont")).await {
-                            // sometimes the onboarding form doesn't appear?!
-                            let form = st.wd.form(By::Css("form.onboardingModal")).await?;
-                            form.set_by_name("projectname", "TurnkeyLinux Example")
-                                .await?;
-                            form.submit_direct().await?;
-
-                            st.wd
-                                .form(By::Css("form.onboardingModal"))
-                                .await?
-                                .submit_direct()
-                                .await?;
-
-                            // sometimes this form doesn't appear either?!
-                            for _ in 0..10 {
-                                if st.wait(By::Css("form.onboardingModal")).await.is_ok() {
-                                    break;
-                                }
-                            }
-
-                            if st.wait(By::Css("form.onboardingModal")).await.is_ok() {
-                                st.wd
-                                    .form(By::Css("form.onboardingModal"))
-                                    .await?
-                                    .submit_direct()
-                                    .await?;
-                            }
-
-                            // this one as well?!
-                            for _ in 0..10 {
-                                if st.wait(By::Css("div.nyroModalCont")).await.is_ok() {
-                                    break;
-                                }
-                            }
-                            if st.wait(By::Css("div.nyroModalCont")).await.is_ok() {
-                                st.wait(By::LinkText("Skip and don't show this page again"))
-                                    .await?
-                                    .click()
-                                    .await?;
-                            }
+                        //st.wait(By::Id("firstTask")).await?.send_keys("Setup Leantime").await?;
+                        if let Ok(form) = st.wd.form(By::Css("form#firstTaskOnboarding")).await {
+                            form.set_by_name("headline", "Setup Leantime").await?;
+                            form.submit().await?;
                         }
+
+                        st.sleep(10_000).await;
+
+                        st.wait(By::XPath("//a[contains(text(), 'explore on my own')]")).await?.click().await?;
+
                         st.goto("dashboard/home").await?;
                         st.wait(By::Css("div.tw-h-full.minCalendar")).await?;
                         Ok(())
@@ -83,6 +52,7 @@ pub const APP: App = App {
                                 .click()
                                 .await?;
                         }
+                        st.sleep(1_000).await;
 
                         Ok(())
                     }
@@ -99,12 +69,6 @@ pub const APP: App = App {
                         st.goto("plugins/marketplace").await?;
 
                         st.wait(By::LinkText("Learn More"))
-                            .await?
-                            .wait_until()
-                            .clickable()
-                            .await?;
-
-                        st.wait(By::Css("img.tw-ml-base.tw-rounded"))
                             .await?
                             .wait_until()
                             .clickable()
